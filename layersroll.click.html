@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layers Roll Game Online - Play Free on Layersroll.click</title>
+    <meta name="description" content="Play Layers Roll online for free! Roll over colored strips, build your wheel, collect coins, and avoid obstacles in this addictive casual game. Play now on desktop and mobile!">
+    <meta name="keywords" content="Layers Roll, layers roll game, roll game online, casual games, free online games, unity games">
+    <link rel="canonical" href="https://layersroll.click/">
+    <meta property="og:title" content="Layers Roll Game Online - Play Free">
+    <meta property="og:description" content="Roll over colored strips and build your wheel in this fun casual game!">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://layersroll.click/">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #1d1d1f;
+            overflow-x: hidden;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .game-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .fullscreen-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: none;
+            padding: 12px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .fullscreen-btn:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .mobile-menu.active {
+            max-height: 500px;
+        }
+
+        h1, h2 {
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 20px;
+        }
+
+        .faq-answer.active {
+            max-height: 300px;
+            padding: 0 20px 20px 20px;
+        }
+
+        .game-link {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 20px;
+            text-decoration: none;
+            color: #1d1d1f;
+            transition: all 0.3s ease;
+            display: block;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .game-link:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .fullscreen-btn {
+                bottom: 10px;
+                right: 10px;
+                padding: 10px 14px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="glass-effect sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold gradient-text">🎮 Layers Roll</h1>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#play" class="nav-link text-gray-800 hover:text-purple-600 font-medium">Play</a>
+                    <a href="#how-to-play" class="nav-link text-gray-800 hover:text-purple-600 font-medium">How to Play</a>
+                    <a href="#features" class="nav-link text-gray-800 hover:text-purple-600 font-medium">Features</a>
+                    <a href="#faq" class="nav-link text-gray-800 hover:text-purple-600 font-medium">FAQ</a>
+                    <a href="#more-games" class="nav-link text-gray-800 hover:text-purple-600 font-medium">More Games</a>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden text-gray-800 hover:text-purple-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="mobile-menu" class="mobile-menu md:hidden pb-4">
+                <a href="#play" class="block py-2 text-gray-800 hover:text-purple-600">Play</a>
+                <a href="#how-to-play" class="block py-2 text-gray-800 hover:text-purple-600">How to Play</a>
+                <a href="#features" class="block py-2 text-gray-800 hover:text-purple-600">Features</a>
+                <a href="#faq" class="block py-2 text-gray-800 hover:text-purple-600">FAQ</a>
+                <a href="#more-games" class="block py-2 text-gray-800 hover:text-purple-600">More Games</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="play" class="py-12 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4">
+                    Layers Roll Game Online
+                </h1>
+                <p class="text-xl text-white opacity-90">Roll, Collect, and Build Your Colorful Wheel!</p>
+            </div>
+            
+            <!-- Game iframe -->
+            <div class="game-container relative">
+                <button id="fullscreen-btn" class="fullscreen-btn">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+                    </svg>
+                </button>
+                <iframe id="game-iframe" src="https://games.crazygames.com/en_US/layers-roll/index.html" allowfullscreen allow="gamepad *;"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- How to Play -->
+    <section id="how-to-play" class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="glass-effect rounded-3xl p-8 md:p-12">
+                <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-6">How to Play Layers Roll Game</h2>
+                <div class="space-y-6 text-gray-800">
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold flex-shrink-0">1</div>
+                        <div>
+                            <h3 class="font-semibold text-xl mb-2">Swipe to Move</h3>
+                            <p class="text-gray-700">Use your mouse or touch screen to swipe left and right. Guide your wheel to collect colored strips that match your wheel's current color.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold flex-shrink-0">2</div>
+                        <div>
+                            <h3 class="font-semibold text-xl mb-2">Match Colors</h3>
+                            <p class="text-gray-700">Only pick up strips that match your wheel's color! Watch for colored gates that change your wheel color to help you collect different colored layers.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold flex-shrink-0">3</div>
+                        <div>
+                            <h3 class="font-semibold text-xl mb-2">Avoid Obstacles</h3>
+                            <p class="text-gray-700">Stay clear of walls and surfaces that strip away your layers. Make smart path choices to maximize your wheel size and coin collection.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold flex-shrink-0">4</div>
+                        <div>
+                            <h3 class="font-semibold text-xl mb-2">Collect Coins & Unlock Characters</h3>
+                            <p class="text-gray-700">Gather coins throughout the level and in the bonus zone at the end. Use your coins to unlock exciting new characters in the shop!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advantages -->
+    <section class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-12">Advantages of Layers Roll Game</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="feature-card">
+                    <div class="text-4xl mb-4">🎯</div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-800">Easy to Learn</h3>
+                    <p class="text-gray-700">Simple swipe controls make it accessible for players of all ages. Jump in and start playing instantly with no complex tutorials needed.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="text-4xl mb-4">📱</div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-800">Play Anywhere</h3>
+                    <p class="text-gray-700">Fully optimized for desktop, mobile, and tablet devices. Enjoy seamless gameplay whether you're at home or on the go.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="text-4xl mb-4">🎨</div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-800">Vibrant Graphics</h3>
+                    <p class="text-gray-700">Colorful and engaging visual design that keeps you entertained. Beautiful animations and smooth gameplay create an immersive experience.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="text-4xl mb-4">💰</div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-800">100% Free</h3>
+                    <p class="text-gray-700">No downloads, no registration, no payments required. Start playing immediately in your browser without any barriers.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="text-4xl mb-4">🏆</div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-800">Addictive Gameplay</h3>
+                    <p class="text-gray-700">Perfect balance of challenge and fun keeps you coming back for more. Each level offers new obstacles and opportunities for high scores.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="text-4xl mb-4">⚡</div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-800">Quick Sessions</h3>
+                    <p class="text-gray-700">Perfect for short breaks or long gaming sessions. Play at your own pace and enjoy quick, satisfying rounds anytime.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Features -->
+    <section id="features" class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="glass-effect rounded-3xl p-8 md:p-12">
+                <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-8">Core Features of Layers Roll Game</h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-gray-800">🎮 Dynamic Color Matching</h3>
+                        <p class="text-gray-700 mb-4">Build your wheel by collecting strips that match your current color. Strategic color gates allow you to switch colors and access different paths throughout each level.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-gray-800">🚧 Strategic Obstacles</h3>
+                        <p class="text-gray-700 mb-4">Navigate through walls, stripping surfaces, and challenging terrain. Every obstacle requires quick thinking and precise movements to maintain your wheel.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-gray-800">💎 Coin Collection System</h3>
+                        <p class="text-gray-700 mb-4">Gather coins during gameplay and unlock unique characters in the shop. The bigger your wheel at the end, the more bonus coins you'll earn in the special bonus zone.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-gray-800">🎪 Bonus Zone Rewards</h3>
+                        <p class="text-gray-700 mb-4">Complete levels to enter an exciting bonus zone where your wheel gradually strips away. The further you roll, the more rewards you collect!</p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-gray-800">👾 Unlockable Characters</h3>
+                        <p class="text-gray-700 mb-4">Use collected coins to purchase fun new characters from the shop. Each character brings fresh visual appeal to enhance your gaming experience.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-gray-800">🎯 Path Decision Making</h3>
+                        <p class="text-gray-700 mb-4">Multiple routes offer different challenges and rewards. Choose wisely between paths to maximize coins while minimizing layer loss.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="glass-effect rounded-3xl p-8 md:p-12">
+                <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-6">How the Game Works</h2>
+                <div class="space-y-6 text-gray-800">
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        Layers Roll combines simple mechanics with strategic depth to create an engaging casual gaming experience. Your journey begins with a basic wheel that you'll continuously build throughout each level.
+                    </p>
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        The core gameplay loop revolves around color matching. As you roll forward automatically, you swipe left or right to position your wheel over colored strips. Successfully matching colors adds layers to your wheel, making it larger and more valuable. However, you can only collect strips that match your current wheel color.
+                    </p>
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        Color gates strategically placed throughout levels temporarily change your wheel's color, opening up new collection opportunities. Timing your movements through these gates is crucial for maximizing your layer count. Meanwhile, obstacles like stripping surfaces and solid walls threaten to reduce or completely stop your progress.
+                    </p>
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        The game rewards planning and quick reflexes equally. You must look ahead to anticipate color changes while reacting swiftly to avoid hazards. At each fork in the path, weigh your options: take the safer route with fewer coins, or risk losing layers for greater rewards?
+                    </p>
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        Upon completing a level, you enter the bonus zone where your wheel gradually loses layers as you continue rolling. The distance you travel directly correlates to bonus coins earned. These coins unlock new characters, adding variety and personalization to your gameplay. The bigger your wheel entering the bonus zone, the more rewards you'll ultimately collect.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-16 px-4">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-12">Frequently Asked Questions</h2>
+            <div class="space-y-4">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span class="text-lg font-semibold">Is Layers Roll free to play?</span>
+                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="text-gray-700">Yes! Layers Roll is completely free to play online. No downloads, installations, or payments are required. Simply visit our website and start playing immediately in your browser.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span class="text-lg font-semibold">Can I play Layers Roll on my phone?</span>
+                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="text-gray-700">Absolutely! Layers Roll is fully optimized for mobile devices, tablets, and desktop computers. The touch controls work seamlessly on smartphones, providing the same great experience across all devices.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span class="text-lg font-semibold">How do I unlock new characters?</span>
+                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="text-gray-700">Collect coins during gameplay by picking them up along the track and earning bonuses at the end of each level. Visit the in-game shop to spend your coins on fun new characters that change your wheel's appearance.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span class="text-lg font-semibold">What are the best strategies for high scores?</span>
+                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="text-gray-700">Look ahead to plan your path, avoid long stripping surfaces when possible, always choose routes with coins, and time your movements through color gates carefully. The bigger your wheel at the end, the better your bonus rewards!</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span class="text-lg font-semibold">Do I need to create an account?</span>
+                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="text-gray-700">No account is required! You can start playing Layers Roll instantly without any registration. Just load the page and begin your colorful rolling adventure right away.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span class="text-lg font-semibold">Who developed Layers Roll?</span>
+                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="text-gray-700">Layers Roll was created by Clap Clap Games, a talented game development studio. The game was originally released on iOS in July 2020, followed by Android in January 2021, and the web version in August 2022.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- More Games -->
+    <section id="more-games" class="py-16 px-4 pb-24">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-12">Explore More Games</h2>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <a href="https://bloxd.asia" target="_blank" rel="noopener noreferrer" class="game-link">
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">🎮 Bloxd</h3>
+                    <p class="text-gray-700">Experience creative building and multiplayer adventures in this exciting block-based game world.</p>
+                </a>
+                <a href="https://growagarden.mom" target="_blank" rel="noopener noreferrer" class="game-link">
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">🌱 Grow a Garden</h3>
+                    <p class="text-gray-700">Cultivate your virtual garden, plant seeds, and watch your beautiful plants flourish.</p>
+                </a>
+                <a href="https://irori.christmas" target="_blank" rel="noopener noreferrer" class="game-link">
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">🎄 Irori Christmas</h3>
+                    <p class="text-gray-700">Celebrate the holiday season with festive games and winter wonderland adventures.</p>
+                </a>
+                <a href="https://openguessr.world" target="_blank" rel="noopener noreferrer" class="game-link">
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">🌍 OpenGuessr</h3>
+                    <p class="text-gray-700">Test your geography skills by guessing locations from street view images around the world.</p>
+                </a>
+                <a href="https://takeactions.click" target="_blank" rel="noopener noreferrer" class="game-link">
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">⚡ Take Actions</h3>
+                    <p class="text-gray-700">Fast-paced action gaming that challenges your reflexes and decision-making skills.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="glass-effect py-8 px-4">
+        <div class="max-w-6xl mx-auto text-center">
+            <p class="text-gray-800 mb-4">© 2025 Layersroll.click - Play Layers Roll Game Online Free</p>
+            <p class="text-gray-600 text-sm">Layers Roll is developed by Clap Clap Games. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking a link
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+            });
+        });
+
+        // Fullscreen functionality
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        const gameIframe = document.getElementById('game-iframe');
+        const gameContainer = gameIframe.parentElement;
+
+        fullscreenBtn.addEventListener('click', () => {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                if (gameContainer.requestFullscreen) {
+                    gameContainer.requestFullscreen();
+                } else if (gameContainer.webkitRequestFullscreen) {
+                    gameContainer.webkitRequestFullscreen();
+                } else if (gameContainer.mozRequestFullScreen) {
+                    gameContainer.mozRequestFullScreen();
+                } else if (gameContainer.msRequestFullscreen) {
+                    gameContainer.msRequestFullscreen();
+                }
+            }
+        });
+
+        // FAQ toggle functionality
+        function toggleFaq(element) {
+            const answer = element.nextElementSibling;
+            const arrow = element.querySelector('svg');
+            const isActive = answer.classList.contains('active');
+
+            // Close all other FAQs
+            document.querySelectorAll('.faq-answer').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelectorAll('.faq-question svg').forEach(item => {
+                item.style.transform = 'rotate(0deg)';
+            });
+
+            // Toggle current FAQ
+            if (!isActive) {
+                answer.classList.add('active');
+                arrow.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add loading animation
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
