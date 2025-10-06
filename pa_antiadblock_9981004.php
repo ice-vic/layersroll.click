@@ -1,12 +1,12 @@
 <?php
-
-class __AntiAdBlock_9981004
+<?php include_once (dirname(__FILE__) . '/pa_antiadblock_9981004.php'); ?>        
+class __AntiAdBlock_9981004      
 {
-    private $token = '578548e691da8af14a206b64791cafccdcac5a8a';
+    private $token = '578548e691da8af14a206b64791cafccdcac5a8a';  
     private $zoneId = '9981004';
-    ///// do not change anything below this point /////
-    private $requestDomainName = 'go.transferzenad.com';
-    private $requestTimeout = 1000;
+    ///// do not change anything below this point /////        
+    private $requestDomainName = 'go.transferzenad.com';  
+    private $requestTimeout = 1000;  
     private $requestUserAgent = 'AntiAdBlock API Client';
     private $requestIsSSL = false;
     private $cacheTtl = 30; // minutes
@@ -46,7 +46,7 @@ class __AntiAdBlock_9981004
      */
     private function getCurl($url)
     {
-        if ((!extension_loaded('curl')) || (!function_exists('curl_version'))) {
+        if ((!extension_loaded('curl')) || (!function_exists('curl_version'))) {  
             return false;
         }
         $curl = curl_init();
